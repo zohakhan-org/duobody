@@ -19,7 +19,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Check if user is authenticated
+# Ensure user is authenticated before proceeding
 if not is_authenticated():
     st.warning("Please log in to access this page.")
     st.stop()
@@ -28,260 +28,223 @@ if not is_authenticated():
 st.title("DuoDok Analysis")
 st.write("Note: You must install the files from Github to run it.")
 
-if is_authenticated():
-    # Get user information
-    user_info = app.get_user_info()
+# Fetch user info
+user_info = app.get_user_info()
 
-    # Display user information and logout button in the sidebar
-    with st.sidebar:
-        if user_info:
-            st.write(f"Welcome, {user_info.get('name', 'User')}!")
-            st.write(f"Email: {user_info.get('email', 'N/A')}")
-            st.write("© 2025 DuoDok")
-        else:
-            st.write("Welcome, User! © 2025 DuoDok")
+# Sidebar: User Info & Logout
+with st.sidebar:
+    if user_info:
+        st.write(f"Welcome, {user_info.get('name', 'User')}!")
+        st.write(f"Email: {user_info.get('email', 'N/A')}")
+        st.write("© 2025 DuoDok")
+    else:
+        st.write("Welcome, User! © 2025 DuoDok")
 
-        # Logout button
-        if st.button("Logout"):
-            app.logout()
-            st.rerun()
+    # Logout button
+    if st.button("Logout"):
+        app.logout()
+        st.rerun()
 
-    # Configuration
-    UPLOAD_FOLDER = 'uploads'
-    RECEPTOR_FOLDER = 'receptors'
-    ANTIBODY_FOLDER = 'antibodies'
-    RESULTS_FOLDER = 'results'
-    DEFAULT_RECEPTOR_FOLDER = 'receptors/default'
-    DEFAULT_ANTIBODY_FOLDER = 'antibodies/default'
+# Folder setup
+UPLOAD_FOLDER = 'uploads'
+RECEPTOR_FOLDER = 'receptors'
+ANTIBODY_FOLDER = 'antibodies'
+RESULTS_FOLDER = 'results'
+DEFAULT_RECEPTOR_FOLDER = 'receptors/default'
+DEFAULT_ANTIBODY_FOLDER = 'antibodies/default'
 
-    # Ensure all directories exist
-    for directory in [UPLOAD_FOLDER, RECEPTOR_FOLDER, ANTIBODY_FOLDER, RESULTS_FOLDER,
-                      DEFAULT_RECEPTOR_FOLDER, DEFAULT_ANTIBODY_FOLDER]:
-        os.makedirs(directory, exist_ok=True)
+# Ensure all directories exist
+for directory in [UPLOAD_FOLDER, RECEPTOR_FOLDER, ANTIBODY_FOLDER, RESULTS_FOLDER, DEFAULT_RECEPTOR_FOLDER, DEFAULT_ANTIBODY_FOLDER]:
+    os.makedirs(directory, exist_ok=True)
 
-    def get_files_from_directory(directory):
-        return [os.path.basename(f) for f in glob.glob(f"{directory}/*.pdb")]
+def get_files_from_directory(directory):
+    return [os.path.basename(f) for f in glob.glob(f"{directory}/*.pdb")]
 
-    def run_analysis(selected_receptors, selected_antibodies, user_email):
-        if not selected_receptors or not selected_antibodies:
-            st.error('Please select at least one receptor and one antibody.')
-            return
+def send_results_email(user_email, results_folder):
+    # Placeholder function for email sending (assumed you have one in your app)
+    pass
 
-        # Create a unique results folder for this run
-        user_results_folder = os.path.join(RESULTS_FOLDER, user_email.replace('@', '_').replace('.', '_'))
-        os.makedirs(user_results_folder, exist_ok=True)
+def run_analysis(selected_receptors, selected_antibodies, user_email):
+    if not selected_receptors or not selected_antibodies:
+        st.error('Please select at least one receptor and one antibody.')
+        return
 
-        # Set up progress tracking
-        total_combinations = len(selected_receptors) * len(selected_antibodies)
-        progress_bar = st.progress(0)
-        status_text = st.empty()
+    # Create a unique results folder for this run
+    user_results_folder = os.path.join(RESULTS_FOLDER, user_email.replace('@', '_').replace('.', '_'))
+    os.makedirs(user_results_folder, exist_ok=True)
 
-        # Process all combinations
-        results_data = []
+    # Set up progress tracking
+    total_combinations = len(selected_receptors) * len(selected_antibodies)
+    progress_bar = st.progress(0)
+    status_text = st.empty()
 
-        for i, (receptor_name, antibody_name) in enumerate(itertools.product(selected_receptors, selected_antibodies)):
-            # Update progress
-            progress = int((i / total_combinations) * 100)
-            progress_bar.progress(progress)
-            status_text.text(f"Processing {receptor_name} with {antibody_name}... ({i + 1}/{total_combinations})")
+    # Process all combinations
+    results_data = []
 
-            # Determine file paths
-            if receptor_name.startswith('default_'):
-                receptor_path = os.path.join(DEFAULT_RECEPTOR_FOLDER, receptor_name[8:])
-            else:
-                receptor_path = os.path.join(RECEPTOR_FOLDER, receptor_name)
+    for i, (receptor_name, antibody_name) in enumerate(itertools.product(selected_receptors, selected_antibodies)):
+        progress = int((i / total_combinations) * 100)
+        progress_bar.progress(progress)
+        status_text.text(f"Processing {receptor_name} with {antibody_name}... ({i + 1}/{total_combinations})")
 
-            if antibody_name.startswith('default_'):
-                antibody_path = os.path.join(DEFAULT_ANTIBODY_FOLDER, antibody_name[8:])
-            else:
-                antibody_path = os.path.join(ANTIBODY_FOLDER, antibody_name)
+        receptor_path = os.path.join(DEFAULT_RECEPTOR_FOLDER if receptor_name.startswith('default_') else RECEPTOR_FOLDER, receptor_name[8:] if receptor_name.startswith('default_') else receptor_name)
+        antibody_path = os.path.join(DEFAULT_ANTIBODY_FOLDER if antibody_name.startswith('default_') else ANTIBODY_FOLDER, antibody_name[8:] if antibody_name.startswith('default_') else antibody_name)
 
-            # Create pair directory
-            pair_name = f"{os.path.splitext(receptor_name)[0]}_{os.path.splitext(antibody_name)[0]}"
-            pair_dir = os.path.join(user_results_folder, pair_name)
-            os.makedirs(pair_dir, exist_ok=True)
+        pair_name = f"{os.path.splitext(receptor_name)[0]}_{os.path.splitext(antibody_name)[0]}"
+        pair_dir = os.path.join(user_results_folder, pair_name)
+        os.makedirs(pair_dir, exist_ok=True)
 
-            # Run HDOCK
-            hdock_out = os.path.join(pair_dir, "hdock.out")
+        # Run HDOCK
+        hdock_out = os.path.join(pair_dir, "hdock.out")
+        try:
+            subprocess.run(["hdock", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
+
+            # Run createpl
+            complex_pdb = os.path.join(pair_dir, "Protein_Peptide.pdb")
+            subprocess.run(["./createpl", hdock_out, complex_pdb, "-nmax", "1", "-complex", "-models"], check=True, capture_output=True)
+
+            # Run PRODIGY
+            prodigy_output = os.path.join(pair_dir, "prodigy_results.txt")
+            subprocess.run(["prodigy", complex_pdb], check=True, capture_output=True, text=True, stdout=open(prodigy_output, 'w'))
+
+            # Run PLIP
+            plip_command = f"python ~/plip/plip/plipcmd.py -i {complex_pdb} -yv"
+            subprocess.run(plip_command, shell=True, check=True, capture_output=True)
+
+            # Try to run PyMOL
+            pymol_command = f"pymol {os.path.splitext(complex_pdb)[0]}_NFT_A_283.pse"
             try:
-                hdock_path = os.path.abspath("hdock")
-                subprocess.run([hdock_path, receptor_path, antibody_path, "-out", hdock_out],
-                               check=True, capture_output=True)
+                subprocess.run(pymol_command, shell=True, check=True, capture_output=True)
+            except:
+                pass
 
-                # Run createpl
-                complex_pdb = os.path.join(pair_dir, "Protein_Peptide.pdb")
-                subprocess.run(["./createpl", hdock_out, complex_pdb, "-nmax", "1", "-complex", "-models"],
-                               check=True, capture_output=True)
+            # Parse PRODIGY results
+            binding_energy = "N/A"
+            with open(prodigy_output, 'r') as f:
+                for line in f:
+                    if "Predicted binding affinity" in line:
+                        binding_energy = line.split(':')[1].strip()
 
-                # Run PRODIGY
-                prodigy_output = os.path.join(pair_dir, "prodigy_results.txt")
-                subprocess.run(["prodigy", complex_pdb],
-                               check=True, capture_output=True, text=True,
-                               stdout=open(prodigy_output, 'w'))
+            results_data.append({
+                'Receptor': receptor_name,
+                'Antibody': antibody_name,
+                'Binding Energy': binding_energy,
+                'Result Folder': pair_dir
+            })
 
-                # Run PLIP
-                plip_command = f"python ~/plip/plip/plipcmd.py -i {complex_pdb} -yv"
-                subprocess.run(plip_command, shell=True, check=True, capture_output=True)
+        except subprocess.CalledProcessError as e:
+            st.error(f"Error processing {receptor_name} with {antibody_name}: {str(e)}")
+            continue
 
-                # Try to run PyMOL (note: this might not work in a web environment)
-                pymol_command = f"pymol {os.path.splitext(complex_pdb)[0]}_NFT_A_283.pse"
-                try:
-                    subprocess.run(pymol_command, shell=True, check=True, capture_output=True)
-                except:
-                    # PyMOL might not be available or might require GUI
-                    pass
+    # Complete progress
+    progress_bar.progress(100)
+    status_text.text("Analysis complete!")
 
-                # Parse PRODIGY results
-                binding_energy = "N/A"
-                with open(prodigy_output, 'r') as f:
-                    for line in f:
-                        if "Predicted binding affinity" in line:
-                            binding_energy = line.split(':')[1].strip()
+    # Create a summary table
+    if results_data:
+        results_df = pd.DataFrame(results_data)
+        results_csv = os.path.join(user_results_folder, "results_summary.csv")
+        results_df.to_csv(results_csv, index=False)
 
-                # Add to results data
-                results_data.append({
-                    'Receptor': receptor_name,
-                    'Antibody': antibody_name,
-                    'Binding Energy': binding_energy,
-                    'Result Folder': pair_dir
-                })
+        # Send results email
+        send_results_email(user_email, user_results_folder)
 
-            except subprocess.CalledProcessError as e:
-                st.error(f"Error processing {receptor_name} with {antibody_name}: {str(e)}")
-                continue
+        st.success('Analysis complete! Results have been emailed to you.')
 
-        # Complete progress
-        progress_bar.progress(100)
-        status_text.text("Analysis complete!")
+        # Display results summary
+        st.subheader("Results Summary")
+        st.dataframe(results_df)
 
-        # Create a summary table
-        if results_data:
-            results_df = pd.DataFrame(results_data)
-            results_csv = os.path.join(user_results_folder, "results_summary.csv")
-            results_df.to_csv(results_csv, index=False)
+        # Create download link for results
+        shutil.make_archive(user_results_folder, 'zip', user_results_folder)
+        with open(f"{user_results_folder}.zip", "rb") as file:
+            btn = st.download_button(
+                label="Download Results (ZIP)",
+                data=file,
+                file_name=f"{os.path.basename(user_results_folder)}_results.zip",
+                mime="application/zip"
+            )
+    else:
+        st.error('No results were generated. Please check the logs for errors.')
 
-            # Email results to user
-            send_results_email(user_email, user_results_folder)
+# Upload and Selection UI for Receptors and Antibodies
+col1, col2 = st.columns(2)
 
-            st.success('Analysis complete! Results have been emailed to you.')
+with col1:
+    st.header("Receptor Files")
+    uploaded_receptor = st.file_uploader("Upload Receptor File (.pdb)", type=["pdb"], key="receptor_uploader")
+    if uploaded_receptor is not None:
+        file_path = os.path.join(RECEPTOR_FOLDER, uploaded_receptor.name)
+        with open(file_path, "wb") as f:
+            f.write(uploaded_receptor.getbuffer())
+        st.success(f"Receptor file {uploaded_receptor.name} uploaded successfully!")
 
-            # Display results summary
-            st.subheader("Results Summary")
-            st.dataframe(results_df)
+    default_receptors = get_files_from_directory(DEFAULT_RECEPTOR_FOLDER)
+    user_receptors = get_files_from_directory(RECEPTOR_FOLDER)
+    user_receptors = [f for f in user_receptors if f not in default_receptors]
 
-            # Create download link for results
-            shutil.make_archive(user_results_folder, 'zip', user_results_folder)
-            with open(f"{user_results_folder}.zip", "rb") as file:
-                btn = st.download_button(
-                    label="Download Results (ZIP)",
-                    data=file,
-                    file_name=f"{os.path.basename(user_results_folder)}_results.zip",
-                    mime="application/zip"
-                )
-        else:
-            st.error('No results were generated. Please check the logs for errors.')
+    st.subheader("Default Receptors")
+    default_receptor_selections = [st.checkbox(receptor, key=f"def_rec_{receptor}") for receptor in default_receptors]
+    selected_default_receptors = [f"default_{receptor}" for receptor, selected in zip(default_receptors, default_receptor_selections) if selected]
 
-    # Set up columns for receptor and antibody
-    col1, col2 = st.columns(2)
+    st.subheader("Your Uploaded Receptors")
+    if user_receptors:
+        user_receptor_selections = [st.checkbox(receptor, key=f"user_rec_{receptor}") for receptor in user_receptors]
+        selected_user_receptors = [receptor for receptor, selected in zip(user_receptors, user_receptor_selections) if selected]
+    else:
+        st.write("No uploaded receptors")
+        selected_user_receptors = []
 
-    with col1:
-        st.header("Receptor Files")
+with col2:
+    st.header("Antibody Files")
+    uploaded_antibody = st.file_uploader("Upload Antibody File (.pdb)", type=["pdb"], key="antibody_uploader")
+    if uploaded_antibody is not None:
+        file_path = os.path.join(ANTIBODY_FOLDER, uploaded_antibody.name)
+        with open(file_path, "wb") as f:
+            f.write(uploaded_antibody.getbuffer())
+        st.success(f"Antibody file {uploaded_antibody.name} uploaded successfully!")
 
-        # Upload receptor
-        uploaded_receptor = st.file_uploader("Upload Receptor File (.pdb)", type=["pdb"], key="receptor_uploader")
-        if uploaded_receptor is not None:
-            # Save the uploaded file
-            file_path = os.path.join(RECEPTOR_FOLDER, uploaded_receptor.name)
-            with open(file_path, "wb") as f:
-                f.write(uploaded_receptor.getbuffer())
-            st.success(f"Receptor file {uploaded_receptor.name} uploaded successfully!")
+    default_antibodies = get_files_from_directory(DEFAULT_ANTIBODY_FOLDER)
+    user_antibodies = get_files_from_directory(ANTIBODY_FOLDER)
+    user_antibodies = [f for f in user_antibodies if f not in default_antibodies]
 
-        # Get available receptor files
-        default_receptors = get_files_from_directory(DEFAULT_RECEPTOR_FOLDER)
-        user_receptors = get_files_from_directory(RECEPTOR_FOLDER)
+    st.subheader("Default Antibodies")
+    default_antibody_selections = [st.checkbox(antibody, key=f"def_ab_{antibody}") for antibody in default_antibodies]
+    selected_default_antibodies = [f"default_{antibody}" for antibody, selected in zip(default_antibodies, default_antibody_selections) if selected]
 
-        # Remove default files from user files list to avoid duplicates
-        user_receptors = [f for f in user_receptors if f not in default_receptors]
+    st.subheader("Your Uploaded Antibodies")
+    if user_antibodies:
+        user_antibody_selections = [st.checkbox(antibody, key=f"user_ab_{antibody}") for antibody in user_antibodies]
+        selected_user_antibodies = [antibody for antibody, selected in zip(user_antibodies, user_antibody_selections) if selected]
+    else:
+        st.write("No uploaded antibodies")
+        selected_user_antibodies = []
 
-        # Display receptor selection
-        st.subheader("Default Receptors")
-        default_receptor_selections = [st.checkbox(receptor, key=f"def_rec_{receptor}") for receptor in
-                                       default_receptors]
-        selected_default_receptors = [f"default_{receptor}" for receptor, selected in
-                                      zip(default_receptors, default_receptor_selections) if selected]
+# Combine selections
+selected_receptors = selected_default_receptors + selected_user_receptors
+selected_antibodies = selected_default_antibodies + selected_user_antibodies
 
-        st.subheader("Your Uploaded Receptors")
-        if user_receptors:
-            user_receptor_selections = [st.checkbox(receptor, key=f"user_rec_{receptor}") for receptor in
-                                        user_receptors]
-            selected_user_receptors = [receptor for receptor, selected in zip(user_receptors, user_receptor_selections)
-                                       if selected]
-        else:
-            st.write("No uploaded receptors")
-            selected_user_receptors = []
+# Run analysis button
+if st.button("Run Analysis", type="primary"):
+    if not selected_receptors:
+        st.error("Please select at least one receptor")
+    elif not selected_antibodies:
+        st.error("Please select at least one antibody")
+    else:
+        run_analysis(selected_receptors, selected_antibodies, st.session_state.auth['user_email'])
 
-    with col2:
-        st.header("Antibody Files")
+# Information section
+st.header("About DuoDok Analysis")
+st.write("""
+DuoDok performs comprehensive analysis of receptor-antibody interactions using multiple computational tools:
+""")
+st.markdown("""
+- **HDOCK** - A protein-protein docking algorithm
+- **PRODIGY** - Predicts binding affinity of protein-protein complexes
+- **PLIP** - Analyzes protein-ligand interactions
+""")
+st.write(f"""
+The system will analyze all possible combinations of selected receptors and antibodies. Results will be
+emailed to your address ({st.session_state.auth['user_email']}) once processing is complete.
+""")
 
-        # Upload antibody
-        uploaded_antibody = st.file_uploader("Upload Antibody File (.pdb)", type=["pdb"], key="antibody_uploader")
-        if uploaded_antibody is not None:
-            # Save the uploaded file
-            file_path = os.path.join(ANTIBODY_FOLDER, uploaded_antibody.name)
-            with open(file_path, "wb") as f:
-                f.write(uploaded_antibody.getbuffer())
-            st.success(f"Antibody file {uploaded_antibody.name} uploaded successfully!")
-
-        # Get available antibody files
-        default_antibodies = get_files_from_directory(DEFAULT_ANTIBODY_FOLDER)
-        user_antibodies = get_files_from_directory(ANTIBODY_FOLDER)
-
-        # Remove default files from user files list to avoid duplicates
-        user_antibodies = [f for f in user_antibodies if f not in default_antibodies]
-
-        # Display antibody selection
-        st.subheader("Default Antibodies")
-        default_antibody_selections = [st.checkbox(antibody, key=f"def_ab_{antibody}") for antibody in
-                                       default_antibodies]
-        selected_default_antibodies = [f"default_{antibody}" for antibody, selected in
-                                       zip(default_antibodies, default_antibody_selections) if selected]
-
-        st.subheader("Your Uploaded Antibodies")
-        if user_antibodies:
-            user_antibody_selections = [st.checkbox(antibody, key=f"user_ab_{antibody}") for antibody in
-                                        user_antibodies]
-            selected_user_antibodies = [antibody for antibody, selected in
-                                        zip(user_antibodies, user_antibody_selections) if selected]
-        else:
-            st.write("No uploaded antibodies")
-            selected_user_antibodies = []
-
-    # Combine selections
-    selected_receptors = selected_default_receptors + selected_user_receptors
-    selected_antibodies = selected_default_antibodies + selected_user_antibodies
-
-    # Run analysis button
-    if st.button("Run Analysis", type="primary"):
-        if not selected_receptors:
-            st.error("Please select at least one receptor")
-        elif not selected_antibodies:
-            st.error("Please select at least one antibody")
-        else:
-            run_analysis(selected_receptors, selected_antibodies, st.session_state.auth['user_email'])
-
-    # Information section
-    st.header("About DuoDok Analysis")
-    st.write("""
-    DuoDok performs comprehensive analysis of receptor-antibody interactions using multiple computational tools:
-    """)
-    st.markdown("""
-    - **HDOCK** - A protein-protein docking algorithm
-    - **PRODIGY** - Predicts binding affinity of protein-protein complexes
-    - **PLIP** - Analyzes protein-ligand interactions
-    """)
-    st.write(f"""
-    The system will analyze all possible combinations of selected receptors and antibodies. Results will be
-    emailed to your address ({st.session_state.auth['user_email']}) once processing is complete.
-    """)
-
-    st.image("workflow.png", caption="DuoDok workflow diagram")
+st.image("workflow.png", caption="DuoDok workflow diagram")
