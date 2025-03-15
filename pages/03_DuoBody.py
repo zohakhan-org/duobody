@@ -109,6 +109,9 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
         # Run HDOCK
         hdock_out = os.path.join(pair_dir, "hdock.out")
         try:
+            if shutil.which("hdock") is None:
+                st.error("HDOCK is not installed or not found in the system path.")
+
             logger.debug(f"Running HDOCK with {receptor_path} and {antibody_path}")
             subprocess.run(["hdock", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
 
