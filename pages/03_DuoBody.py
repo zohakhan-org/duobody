@@ -7,6 +7,11 @@ import subprocess
 import shutil
 import pandas as pd
 import app
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger()
 
 # Add the root directory to the path so we can import from the root
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -58,9 +63,13 @@ for directory in [UPLOAD_FOLDER, RECEPTOR_FOLDER, ANTIBODY_FOLDER, RESULTS_FOLDE
     os.makedirs(directory, exist_ok=True)
 
 def get_files_from_directory(directory):
-    return [os.path.basename(f) for f in glob.glob(f"{directory}/*.pdb")]
+    logger.debug(f"Getting files from directory: {directory}")
+    files = [os.path.basename(f) for f in glob.glob(f"{directory}/*.pdb")]
+    logger.debug(f"Found {len(files)} files: {files}")
+    return files
 
 def send_results_email(user_email, results_folder):
+    logger.debug(f"Sending results email to {user_email}, results folder: {results_folder}")
     # Placeholder function for email sending (assumed you have one in your app)
     pass
 
@@ -72,6 +81,7 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
     # Create a unique results folder for this run
     user_results_folder = os.path.join(RESULTS_FOLDER, user_email.replace('@', '_').replace('.', '_'))
     os.makedirs(user_results_folder, exist_ok=True)
+    logger.debug(f"Results will be saved in: {user_results_folder}")
 
     # Set up progress tracking
     total_combinations = len(selected_receptors) * len(selected_antibodies)
@@ -93,28 +103,37 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
         pair_dir = os.path.join(user_results_folder, pair_name)
         os.makedirs(pair_dir, exist_ok=True)
 
+        # Debugging: Log receptor and antibody paths
+        logger.debug(f"Receptor path: {receptor_path}, Antibody path: {antibody_path}")
+
         # Run HDOCK
         hdock_out = os.path.join(pair_dir, "hdock.out")
         try:
+            logger.debug(f"Running HDOCK with {receptor_path} and {antibody_path}")
             subprocess.run(["hdock", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
 
             # Run createpl
             complex_pdb = os.path.join(pair_dir, "Protein_Peptide.pdb")
+            logger.debug(f"Running createpl with output: {hdock_out}, complex: {complex_pdb}")
             subprocess.run(["./createpl", hdock_out, complex_pdb, "-nmax", "1", "-complex", "-models"], check=True, capture_output=True)
 
             # Run PRODIGY
             prodigy_output = os.path.join(pair_dir, "prodigy_results.txt")
+            logger.debug(f"Running PRODIGY with complex: {complex_pdb}")
             subprocess.run(["prodigy", complex_pdb], check=True, capture_output=True, text=True, stdout=open(prodigy_output, 'w'))
 
             # Run PLIP
             plip_command = f"python ~/plip/plip/plipcmd.py -i {complex_pdb} -yv"
+            logger.debug(f"Running PLIP with command: {plip_command}")
             subprocess.run(plip_command, shell=True, check=True, capture_output=True)
 
             # Try to run PyMOL
             pymol_command = f"pymol {os.path.splitext(complex_pdb)[0]}_NFT_A_283.pse"
             try:
+                logger.debug(f"Running PyMOL with command: {pymol_command}")
                 subprocess.run(pymol_command, shell=True, check=True, capture_output=True)
-            except:
+            except Exception as e:
+                logger.error(f"Error running PyMOL: {e}")
                 pass
 
             # Parse PRODIGY results
@@ -132,6 +151,7 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
             })
 
         except subprocess.CalledProcessError as e:
+            logger.error(f"Error processing {receptor_name} with {antibody_name}: {str(e)}")
             st.error(f"Error processing {receptor_name} with {antibody_name}: {str(e)}")
             continue
 
