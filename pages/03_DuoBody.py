@@ -73,9 +73,20 @@ def send_results_email(user_email, results_folder):
     # Placeholder function for email sending (assumed you have one in your app)
     pass
 
+def check_hdock_installed():
+    """Check if HDOCK is installed and available in system path."""
+    if shutil.which("hdock") is None:
+        st.error("HDOCK is not installed or not found in the system path. Please install HDOCK.")
+        return False
+    return True
+
 def run_analysis(selected_receptors, selected_antibodies, user_email):
     if not selected_receptors or not selected_antibodies:
         st.error('Please select at least one receptor and one antibody.')
+        return
+
+    # Check if HDOCK is installed
+    if not check_hdock_installed():
         return
 
     # Create a unique results folder for this run
@@ -109,9 +120,6 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
         # Run HDOCK
         hdock_out = os.path.join(pair_dir, "hdock.out")
         try:
-            if shutil.which("hdock") is None:
-                st.error("HDOCK is not installed or not found in the system path.")
-
             logger.debug(f"Running HDOCK with {receptor_path} and {antibody_path}")
             subprocess.run(["hdock", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
 
@@ -262,12 +270,7 @@ DuoDok performs comprehensive analysis of receptor-antibody interactions using m
 """)
 st.markdown("""
 - **HDOCK** - A protein-protein docking algorithm
-- **PRODIGY** - Predicts binding affinity of protein-protein complexes
-- **PLIP** - Analyzes protein-ligand interactions
+- **PRODIGY** - A binding affinity prediction tool
+- **PLIP** - A tool for protein-ligand interaction analysis
 """)
-st.write(f"""
-The system will analyze all possible combinations of selected receptors and antibodies. Results will be
-emailed to your address ({st.session_state.auth['user_email']}) once processing is complete.
-""")
-
-st.image("workflow.png", caption="DuoDok workflow diagram")
+st.write("This platform facilitates an efficient workflow for antibody research and development.")
