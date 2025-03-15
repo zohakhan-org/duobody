@@ -11,7 +11,7 @@ from utils.rate_limiter import check_rate_limit
 # Load environment variables
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
-REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8503')
+REDIRECT_URI = os.getenv('REDIRECT_URI', 'http://localhost:8501')
 
 # OAuth2 configuration
 SCOPES = ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
