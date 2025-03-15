@@ -121,7 +121,8 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
         hdock_out = os.path.join(pair_dir, "hdock.out")
         hdock_dir = os.path.abspath('./HDOCKlite')
         try:
-            logger.debug(f"Running HDOCK with {receptor_path} and {antibody_path}")
+            subprocess.run(f'cd {hdock_dir} && ./hdock {receptor_path} {antibody_path} -out hdock.out', shell=True)
+
             subprocess.run("chmod +x ./HDOCKlite/hdock", shell=True)
             subprocess.run(["./HDOCKlite/hdock"
                             "", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
