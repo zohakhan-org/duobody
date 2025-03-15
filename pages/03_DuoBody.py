@@ -1,10 +1,11 @@
 import glob
-
 import streamlit as st
 import sys
 import os
 import itertools
 import subprocess
+import shutil
+import pandas as pd
 import app
 
 # Add the root directory to the path so we can import from the root
@@ -25,7 +26,7 @@ if not is_authenticated():
 
 # Page content
 st.title("DuoDok Analysis")
-st.write("Note: You must install the files from Github to run its.")
+st.write("Note: You must install the files from Github to run it.")
 
 if is_authenticated():
     # Get user information
@@ -37,7 +38,6 @@ if is_authenticated():
             st.write(f"Welcome, {user_info.get('name', 'User')}!")
             st.write(f"Email: {user_info.get('email', 'N/A')}")
             st.write("© 2025 DuoDok")
-
         else:
             st.write("Welcome, User! © 2025 DuoDok")
 
@@ -46,7 +46,7 @@ if is_authenticated():
             app.logout()
             st.rerun()
 
-#    Configuration
+    # Configuration
     UPLOAD_FOLDER = 'uploads'
     RECEPTOR_FOLDER = 'receptors'
     ANTIBODY_FOLDER = 'antibodies'
@@ -61,7 +61,6 @@ if is_authenticated():
 
     def get_files_from_directory(directory):
         return [os.path.basename(f) for f in glob.glob(f"{directory}/*.pdb")]
-
 
     def run_analysis(selected_receptors, selected_antibodies, user_email):
         if not selected_receptors or not selected_antibodies:
@@ -106,8 +105,6 @@ if is_authenticated():
             hdock_out = os.path.join(pair_dir, "hdock.out")
             try:
                 hdock_path = os.path.abspath("hdock")
-
-                #subprocess.run("chmod +x ./hdock", shell=True)
                 subprocess.run([hdock_path, receptor_path, antibody_path, "-out", hdock_out],
                                check=True, capture_output=True)
 
@@ -183,7 +180,6 @@ if is_authenticated():
                 )
         else:
             st.error('No results were generated. Please check the logs for errors.')
-
 
     # Set up columns for receptor and antibody
     col1, col2 = st.columns(2)
@@ -272,6 +268,7 @@ if is_authenticated():
             st.error("Please select at least one antibody")
         else:
             run_analysis(selected_receptors, selected_antibodies, st.session_state.auth['user_email'])
+
     # Information section
     st.header("About DuoDok Analysis")
     st.write("""
@@ -288,7 +285,3 @@ if is_authenticated():
     """)
 
     st.image("workflow.png", caption="DuoDok workflow diagram")
-
-
-
-
