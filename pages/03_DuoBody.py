@@ -75,7 +75,7 @@ def send_results_email(user_email, results_folder):
 
 def check_hdock_installed():
     """Check if HDOCK is installed and available in system path."""
-    if shutil.which("./hdock") is None:
+    if shutil.which("./HDOCKlite/hdock") is None:
         st.error("HDOCK is not installed or not found in the system path. Please install HDOCK.")
         return False
     return True
@@ -119,14 +119,16 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
 
         # Run HDOCK
         hdock_out = os.path.join(pair_dir, "hdock.out")
+        hdock_dir = os.path.abspath('./HDOCKlite')
         try:
             logger.debug(f"Running HDOCK with {receptor_path} and {antibody_path}")
-            subprocess.run(["./hdock", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
+            subprocess.run(["./HDOCKlite/hdock"
+                            "", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
 
             # Run createpl
             complex_pdb = os.path.join(pair_dir, "Protein_Peptide.pdb")
             logger.debug(f"Running createpl with output: {hdock_out}, complex: {complex_pdb}")
-            subprocess.run(["./createpl", hdock_out, complex_pdb, "-nmax", "1", "-complex", "-models"], check=True, capture_output=True)
+            subprocess.run(["./HDOCKlite/createpl", hdock_out, complex_pdb, "-nmax", "1", "-complex", "-models"], check=True, capture_output=True)
 
             # Run PRODIGY
             prodigy_output = os.path.join(pair_dir, "prodigy_results.txt")
