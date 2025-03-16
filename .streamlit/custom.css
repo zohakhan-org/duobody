@@ -1,8 +1,8 @@
 /* Hide default Streamlit elements */
 #MainMenu { visibility: hidden; }      /* Hide the menu (three dots) */
 footer { visibility: hidden; }         /* Hide the footer (edit, fork, etc.) */
-.stApp .css-1a5k6so { display: none; } /* Hide the hamburger menu (for mobile views) */
-
+.stApp .css-1q8gqfj { display: none; }  /* Hide the pencil icon (edit) */
+.stApp .css-1wdll7g { display: none; }  /* Hide the GitHub (fork) icon */
 /* Retain only the Share and Star buttons */
 .stShareButton { display: block !important; }
 .stStarButton { display: block !important; }
