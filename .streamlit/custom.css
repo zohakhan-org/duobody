@@ -1,6 +1,6 @@
 /* Hide default Streamlit elements */
 #MainMenu {visibility: hidden;}
-/* header {visibility: hidden;} */
+ header {visibility: hidden;}
 footer {visibility: hidden;}
 .stShareButton { display: block; }
 .stStarButton { display: block; }
