@@ -121,11 +121,10 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
         hdock_out = os.path.join(pair_dir, "hdock.out")
         hdock_dir = os.path.abspath('./HDOCKlite')
         try:
-            subprocess.run(f'cd {hdock_dir} && ./hdock {receptor_path} {antibody_path} -out hdock.out', shell=True)
 
             subprocess.run("chmod +x ./HDOCKlite/hdock", shell=True)
             subprocess.run(["./HDOCKlite/hdock"
-                            "", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True)
+                            "", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True, shell=True)
 
             # Run createpl
             complex_pdb = os.path.join(pair_dir, "Protein_Peptide.pdb")
