@@ -127,6 +127,7 @@ if analysis_type == "Single PDB Analysis":
 
             # Analyze button
             if st.button("Analyze Antibody Structure", key="analyze_antibody_btn"):
+                st.balloons()
                 # Validate the file
                 is_valid, message = analyzer.validate_file(antibody_file)
 
