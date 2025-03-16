@@ -11,4 +11,7 @@ textColor = "#333333"
 font = "sans serif"
 
 [browser]
-gatherUsageStats = true
+gatherUsageStats = false
+
+[ui]
+showSidebarNavigation = false
