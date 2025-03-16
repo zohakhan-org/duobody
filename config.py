@@ -12,7 +12,7 @@ GOOGLE_AUTH_SCOPE = ['https://www.googleapis.com/auth/userinfo.email', 'https://
 
 # Application Configuration
 SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key_for_development')
-CONTACT_EMAIL = os.getenv('CONTACT_EMAIL')
+CONTACT_EMAIL = os.getenv('CONTACT_EMAIL', 'mohdzohakhanlearning@gmail.com')
 
 # Email Configuration
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')

@@ -42,15 +42,17 @@ class EmailSender:
 
         return errors
 
-    def send_contact_email(self, name, email, subject, message):
-        """Send a contact email"""
+    def send_contact_email(self, name, email, subject, message, recipient="mohdzohakhan@gmail.com"):
+        """Send a contact email to a specific recipient"""
         if not self.username or not self.password:
             raise ValueError("Email credentials are not configured.")
+
+        # If recipient is not provided, default to self.contact_email
 
         # Create a multipart message
         msg = MIMEMultipart()
         msg['From'] = self.username
-        msg['To'] = self.contact_email
+        msg['To'] = recipient
         msg['Subject'] = f"Contact Form: {subject}"
 
         # Create the email body
@@ -79,7 +81,7 @@ class EmailSender:
             server.login(self.username, self.password)
 
             # Send the email
-            server.sendmail(self.username, self.contact_email, msg.as_string())
+            server.sendmail(self.username, recipient, msg.as_string())
 
             # Close the connection
             server.close()
@@ -90,8 +92,8 @@ class EmailSender:
 
     def send_notification_email(self, to_email, subject, message):
         """Send a notification email"""
-        if not self.username or not self.password:
-            raise ValueError("Email credentials are not configured.")
+       # if not self.username or not self.password:
+        #    raise ValueError("Email credentials are not configured.")
 
         # Create a multipart message
         msg = MIMEMultipart()
@@ -121,3 +123,4 @@ class EmailSender:
             return True, "Notification email sent successfully."
         except Exception as e:
             return False, f"Failed to send notification email: {str(e)}"
+
