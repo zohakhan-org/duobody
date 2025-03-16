@@ -48,7 +48,6 @@ class EmailSender:
    #         raise ValueError("Email credentials are not configured.")
 
         # If recipient is not provided, default to self.contact_email
-
         # Create a multipart message
         msg = MIMEMultipart()
         msg['From'] = self.username
