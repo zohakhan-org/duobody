@@ -5,6 +5,7 @@ port = 8501
 enableCORS = false
 
 [theme]
+base = "dark"
 primaryColor = "#9A7DFF"
 backgroundColor = "#1A1A1A"
 secondaryBackgroundColor = "#2D2D2D"
@@ -15,7 +16,7 @@ font = "sans serif"
 gatherUsageStats = false
 
 [ui]
-showSidebarNavigation = false
-showFooter = false
-showHeader = false
-showToolbar = false
+showSidebarNavigation = true
+showFooter = true
+showHeader = true
+showToolbar = true
