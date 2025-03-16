@@ -16,7 +16,7 @@ font = "sans serif"
 gatherUsageStats = false
 
 [ui]
-showSidebarNavigation = true
-showFooter = true
-showHeader = true
-showToolbar = true
+showSidebarNavigation = false
+showFooter = false
+showHeader = false
+showToolbar = false
