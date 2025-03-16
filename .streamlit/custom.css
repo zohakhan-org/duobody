@@ -67,3 +67,20 @@
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+@media (max-width: 768px) {
+    .stDataFrame, .stAlert, .stExpander {
+        border-radius: 16px !important;
+        padding: 16px !important;
+    }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif !important;
+}
+div.block-container {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
