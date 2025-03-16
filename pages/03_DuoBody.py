@@ -51,16 +51,21 @@ with st.sidebar:
         st.rerun()
 
 # Folder setup
-UPLOAD_FOLDER = 'uploads'
-RECEPTOR_FOLDER = 'receptors'
-ANTIBODY_FOLDER = 'antibodies'
-RESULTS_FOLDER = 'results'
-DEFAULT_RECEPTOR_FOLDER = 'receptors/default'
-DEFAULT_ANTIBODY_FOLDER = 'antibodies/default'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+RECEPTOR_FOLDER = os.path.join(BASE_DIR, 'receptors')
+ANTIBODY_FOLDER = os.path.join(BASE_DIR, 'antibodies')
+RESULTS_FOLDER = os.path.join(BASE_DIR, 'results')
+DEFAULT_RECEPTOR_FOLDER = os.path.join(RECEPTOR_FOLDER, 'default')
+DEFAULT_ANTIBODY_FOLDER = os.path.join(ANTIBODY_FOLDER, 'default')
+HDOCK_DIR = os.path.join(BASE_DIR, 'HDOCKlite')
 
 # Ensure all directories exist
-for directory in [UPLOAD_FOLDER, RECEPTOR_FOLDER, ANTIBODY_FOLDER, RESULTS_FOLDER, DEFAULT_RECEPTOR_FOLDER, DEFAULT_ANTIBODY_FOLDER]:
+for directory in [UPLOAD_FOLDER, RECEPTOR_FOLDER, ANTIBODY_FOLDER,
+                  RESULTS_FOLDER, DEFAULT_RECEPTOR_FOLDER,
+                  DEFAULT_ANTIBODY_FOLDER, HDOCK_DIR]:
     os.makedirs(directory, exist_ok=True)
+
 
 def get_files_from_directory(directory):
     logger.debug(f"Getting files from directory: {directory}")
@@ -68,24 +73,40 @@ def get_files_from_directory(directory):
     logger.debug(f"Found {len(files)} files: {files}")
     return files
 
+
 def send_results_email(user_email, results_folder):
     logger.debug(f"Sending results email to {user_email}, results folder: {results_folder}")
-    # Placeholder function for email sending (assumed you have one in your app)
+    # Placeholder function for email sending
     pass
 
+
 def check_hdock_installed():
-    """Check if HDOCK is installed and available in system path."""
-    if shutil.which("./HDOCKlite/hdock") is None:
-        st.error("HDOCK is not installed or not found in the system path. Please install HDOCK.")
+    """Check if HDOCK is properly installed"""
+    try:
+        hdock_path = os.path.join(HDOCK_DIR, 'hdock')
+        createpl_path = os.path.join(HDOCK_DIR, 'createpl')
+
+        if not os.path.exists(hdock_path):
+            raise FileNotFoundError(f"HDOCK not found at: {hdock_path}")
+        if not os.path.exists(createpl_path):
+            raise FileNotFoundError(f"createpl not found at: {createpl_path}")
+
+        # Set execute permissions
+        os.chmod(hdock_path, 0o755)
+        os.chmod(createpl_path, 0o755)
+
+        return True
+    except Exception as e:
+        st.error(f"HDOCK setup failed: {str(e)}")
+        st.info(f"Please ensure HDOCKlite directory exists at {HDOCK_DIR} with executables")
         return False
-    return True
+
 
 def run_analysis(selected_receptors, selected_antibodies, user_email):
     if not selected_receptors or not selected_antibodies:
         st.error('Please select at least one receptor and one antibody.')
         return
 
-    # Check if HDOCK is installed
     if not check_hdock_installed():
         return
 
@@ -107,48 +128,60 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
         progress_bar.progress(progress)
         status_text.text(f"Processing {receptor_name} with {antibody_name}... ({i + 1}/{total_combinations})")
 
-        receptor_path = os.path.join(DEFAULT_RECEPTOR_FOLDER if receptor_name.startswith('default_') else RECEPTOR_FOLDER, receptor_name[8:] if receptor_name.startswith('default_') else receptor_name)
-        antibody_path = os.path.join(DEFAULT_ANTIBODY_FOLDER if antibody_name.startswith('default_') else ANTIBODY_FOLDER, antibody_name[8:] if antibody_name.startswith('default_') else antibody_name)
+        # Get absolute paths
+        receptor_path = os.path.join(
+            DEFAULT_RECEPTOR_FOLDER if receptor_name.startswith('default_') else RECEPTOR_FOLDER,
+            receptor_name[8:] if receptor_name.startswith('default_') else receptor_name
+        )
+        antibody_path = os.path.join(
+            DEFAULT_ANTIBODY_FOLDER if antibody_name.startswith('default_') else ANTIBODY_FOLDER,
+            antibody_name[8:] if antibody_name.startswith('default_') else antibody_name
+        )
 
         pair_name = f"{os.path.splitext(receptor_name)[0]}_{os.path.splitext(antibody_name)[0]}"
         pair_dir = os.path.join(user_results_folder, pair_name)
         os.makedirs(pair_dir, exist_ok=True)
 
-        # Debugging: Log receptor and antibody paths
-        logger.debug(f"Receptor path: {receptor_path}, Antibody path: {antibody_path}")
-
-        # Run HDOCK
-        hdock_out = os.path.join(pair_dir, "hdock.out")
-        hdock_dir = os.path.abspath('./HDOCKlite')
         try:
+            # HDOCK paths
+            hdock_exec = os.path.join(HDOCK_DIR, 'hdock')
+            createpl_exec = os.path.join(HDOCK_DIR, 'createpl')
+            hdock_out = os.path.join(pair_dir, "hdock.out")
+            complex_pdb = os.path.join(pair_dir, "Protein_Peptide.pdb")
 
-            subprocess.run("chmod +x ./HDOCKlite/hdock", shell=True)
-            subprocess.run(["./HDOCKlite/hdock"
-                            "", receptor_path, antibody_path, "-out", hdock_out], check=True, capture_output=True, shell=True)
+            # Run HDOCK
+            logger.debug(f"Running HDOCK: {hdock_exec} {receptor_path} {antibody_path}")
+            subprocess.run(
+                [hdock_exec, receptor_path, antibody_path, "-out", hdock_out],
+                check=True,
+                cwd=HDOCK_DIR
+            )
 
             # Run createpl
-            complex_pdb = os.path.join(pair_dir, "Protein_Peptide.pdb")
-            logger.debug(f"Running createpl with output: {hdock_out}, complex: {complex_pdb}")
-            subprocess.run(["./HDOCKlite/createpl", hdock_out, complex_pdb, "-nmax", "1", "-complex", "-models"], check=True, capture_output=True)
+            logger.debug(f"Running createpl: {createpl_exec} {hdock_out}")
+            subprocess.run(
+                [createpl_exec, hdock_out, complex_pdb, "-nmax", "1", "-complex", "-models"],
+                check=True,
+                cwd=HDOCK_DIR
+            )
 
             # Run PRODIGY
             prodigy_output = os.path.join(pair_dir, "prodigy_results.txt")
-            logger.debug(f"Running PRODIGY with complex: {complex_pdb}")
-            subprocess.run(["prodigy", complex_pdb], check=True, capture_output=True, text=True, stdout=open(prodigy_output, 'w'))
+            logger.debug(f"Running PRODIGY: {complex_pdb}")
+            subprocess.run(
+                ["prodigy", complex_pdb],
+                check=True,
+                stdout=open(prodigy_output, 'w')
+            )
 
             # Run PLIP
-            plip_command = f"python ~/plip/plip/plipcmd.py -i {complex_pdb} -yv"
-            logger.debug(f"Running PLIP with command: {plip_command}")
-            subprocess.run(plip_command, shell=True, check=True, capture_output=True)
-
-            # Try to run PyMOL
-            pymol_command = f"pymol {os.path.splitext(complex_pdb)[0]}_NFT_A_283.pse"
-            try:
-                logger.debug(f"Running PyMOL with command: {pymol_command}")
-                subprocess.run(pymol_command, shell=True, check=True, capture_output=True)
-            except Exception as e:
-                logger.error(f"Error running PyMOL: {e}")
-                pass
+            plip_output = os.path.join(pair_dir, "plip_results")
+            os.makedirs(plip_output, exist_ok=True)
+            logger.debug(f"Running PLIP: {complex_pdb}")
+            subprocess.run(
+                ["plip", "-f", complex_pdb, "-o", plip_output, "-x"],
+                check=True
+            )
 
             # Parse PRODIGY results
             binding_energy = "N/A"
@@ -173,22 +206,19 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
     progress_bar.progress(100)
     status_text.text("Analysis complete!")
 
-    # Create a summary table
+    # Create summary
     if results_data:
         results_df = pd.DataFrame(results_data)
         results_csv = os.path.join(user_results_folder, "results_summary.csv")
         results_df.to_csv(results_csv, index=False)
 
-        # Send results email
         send_results_email(user_email, user_results_folder)
-
         st.success('Analysis complete! Results have been emailed to you.')
 
-        # Display results summary
         st.subheader("Results Summary")
         st.dataframe(results_df)
 
-        # Create download link for results
+        # Create download link
         shutil.make_archive(user_results_folder, 'zip', user_results_folder)
         with open(f"{user_results_folder}.zip", "rb") as file:
             btn = st.download_button(
@@ -200,13 +230,14 @@ def run_analysis(selected_receptors, selected_antibodies, user_email):
     else:
         st.error('No results were generated. Please check the logs for errors.')
 
-# Upload and Selection UI for Receptors and Antibodies
+
+# Upload and Selection UI
 col1, col2 = st.columns(2)
 
 with col1:
     st.header("Receptor Files")
     uploaded_receptor = st.file_uploader("Upload Receptor File (.pdb)", type=["pdb"], key="receptor_uploader")
-    if uploaded_receptor is not None:
+    if uploaded_receptor:
         file_path = os.path.join(RECEPTOR_FOLDER, uploaded_receptor.name)
         with open(file_path, "wb") as f:
             f.write(uploaded_receptor.getbuffer())
@@ -218,12 +249,14 @@ with col1:
 
     st.subheader("Default Receptors")
     default_receptor_selections = [st.checkbox(receptor, key=f"def_rec_{receptor}") for receptor in default_receptors]
-    selected_default_receptors = [f"default_{receptor}" for receptor, selected in zip(default_receptors, default_receptor_selections) if selected]
+    selected_default_receptors = [f"default_{receptor}" for receptor, selected in
+                                  zip(default_receptors, default_receptor_selections) if selected]
 
     st.subheader("Your Uploaded Receptors")
     if user_receptors:
         user_receptor_selections = [st.checkbox(receptor, key=f"user_rec_{receptor}") for receptor in user_receptors]
-        selected_user_receptors = [receptor for receptor, selected in zip(user_receptors, user_receptor_selections) if selected]
+        selected_user_receptors = [receptor for receptor, selected in zip(user_receptors, user_receptor_selections) if
+                                   selected]
     else:
         st.write("No uploaded receptors")
         selected_user_receptors = []
@@ -231,7 +264,7 @@ with col1:
 with col2:
     st.header("Antibody Files")
     uploaded_antibody = st.file_uploader("Upload Antibody File (.pdb)", type=["pdb"], key="antibody_uploader")
-    if uploaded_antibody is not None:
+    if uploaded_antibody:
         file_path = os.path.join(ANTIBODY_FOLDER, uploaded_antibody.name)
         with open(file_path, "wb") as f:
             f.write(uploaded_antibody.getbuffer())
@@ -243,28 +276,34 @@ with col2:
 
     st.subheader("Default Antibodies")
     default_antibody_selections = [st.checkbox(antibody, key=f"def_ab_{antibody}") for antibody in default_antibodies]
-    selected_default_antibodies = [f"default_{antibody}" for antibody, selected in zip(default_antibodies, default_antibody_selections) if selected]
+    selected_default_antibodies = [f"default_{antibody}" for antibody, selected in
+                                   zip(default_antibodies, default_antibody_selections) if selected]
 
     st.subheader("Your Uploaded Antibodies")
     if user_antibodies:
         user_antibody_selections = [st.checkbox(antibody, key=f"user_ab_{antibody}") for antibody in user_antibodies]
-        selected_user_antibodies = [antibody for antibody, selected in zip(user_antibodies, user_antibody_selections) if selected]
+        selected_user_antibodies = [antibody for antibody, selected in zip(user_antibodies, user_antibody_selections) if
+                                    selected]
     else:
         st.write("No uploaded antibodies")
         selected_user_antibodies = []
 
-# Combine selections
+# Combine selections and run
 selected_receptors = selected_default_receptors + selected_user_receptors
 selected_antibodies = selected_default_antibodies + selected_user_antibodies
 
-# Run analysis button
 if st.button("Run Analysis", type="primary"):
     if not selected_receptors:
         st.error("Please select at least one receptor")
     elif not selected_antibodies:
         st.error("Please select at least one antibody")
     else:
-        run_analysis(selected_receptors, selected_antibodies, st.session_state.auth['user_email'])
+        if user_info and 'email' in user_info:
+            run_analysis(selected_receptors, selected_antibodies, user_info['email'])
+        else:
+            st.error("User authentication failed. Please log in again.")
+            app.logout()
+            st.rerun()
 
 # Information section
 st.header("About DuoDok Analysis")
