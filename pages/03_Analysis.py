@@ -184,6 +184,7 @@ if analysis_type == "Single PDB Analysis":
         if receptor_file is not None and antibody_file is not None:
             if st.button("Analyze Receptor-Antibody Interaction", key="analyze_ra_btn"):
                 # Validate both files
+                st.balloons()
                 is_valid_receptor, message_receptor = analyzer.validate_file(receptor_file)
                 is_valid_antibody, message_antibody = analyzer.validate_file(antibody_file)
 
@@ -333,6 +334,7 @@ else:  # Comparison analysis
     # Compare button
     if file1 is not None and file2 is not None:
         if st.button("Compare Structures"):
+            st.balloons()
             # Validate both files
             is_valid1, message1 = analyzer.validate_file(file1)
             is_valid2, message2 = analyzer.validate_file(file2)
