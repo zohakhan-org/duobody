@@ -1,7 +1,6 @@
-/* Hide default Streamlit elements */
 /* Hide the GitHub (fork) and pencil (edit) icons */
-.stApp .css-1j7k2n1, /* Edit (pencil) icon */
-.stApp .css-1qdprrj { /* GitHub (fork) icon */
+.stApp .css-1f6ti3b,  /* GitHub (fork) icon */
+.stApp .css-14ke32c {  /* Pencil (edit) icon */
     display: none !important;
 }
 
