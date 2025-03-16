@@ -17,6 +17,12 @@ st.set_page_config(
     layout="wide"
 )
 
+def load_custom_css():
+    with open(".streamlit/custom.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Call the function at the beginning
+load_custom_css()
 # Check if user is authenticated
 if not is_authenticated():
     st.warning("Please log in to access this page.")

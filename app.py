@@ -5,6 +5,7 @@ import hashlib
 import secrets
 from utils.rate_limiter import check_rate_limit
 
+
 # Set page configuration
 st.set_page_config(
     page_title="PDB Analysis Platform",
@@ -12,6 +13,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+def load_custom_css():
+    with open(".streamlit/custom.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Call the function at the beginning
+load_custom_css()
 
 # Initialize session state variables
 if 'auth' not in st.session_state:
