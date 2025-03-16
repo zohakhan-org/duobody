@@ -5,7 +5,7 @@
 }
 
 /* Ensure Share and Star buttons are visible */
-.stApp .stShareButton, .stApp .stStarButton {
+.stApp .stButton[data-baseweb="button"]:not(.stDownloadButton):not(.stFileUploadButton) {
     display: inline-block !important;
 }
 
@@ -14,9 +14,6 @@
     visibility: hidden;
 }
 
-/* Hide the settings (gear icon) and other elements */
-button[title="Settings"] { display: none; }
-button[title="Help"] { display: none; }
 div.block-container {padding-top: 2rem;}
 
 /* Jazzy Theme Styles */
