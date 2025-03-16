@@ -1,90 +1,69 @@
-/* Hide the GitHub (fork) and pencil (edit) icons */
-.stApp .css-1f6ti3b,  /* GitHub (fork) icon */
-.stApp .css-14ke32c {  /* Pencil (edit) icon */
+/* Core Reset */
+#MainMenu, header, footer, .stDeployButton {
     display: none !important;
 }
 
-/* Ensure Share and Star buttons are visible */
-.stApp .stButton[data-baseweb="button"]:not(.stDownloadButton):not(.stFileUploadButton) {
-    display: inline-block !important;
-}
-
-/* Optional: Hide the Main Menu, Footer, and Deploy Button */
-#MainMenu, header, footer, .stDeployButton {
-    visibility: hidden;
-}
-
-div.block-container {padding-top: 2rem;}
-
-/* Jazzy Theme Styles */
-:root {
-    --primary: #9A7DFF;
-    --secondary: #FF7D7D;
-    --background: linear-gradient(45deg, #1A1A1A 0%, #2D2D2D 100%);
-}
-
-/* Body styling */
+/* Gradient Overlay Fix */
 .stApp {
-    background-image: var(--background);
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* Button styling */
-.stButton>button {
-    background: var(--primary);
-    color: white;
-    border-radius: 25px;
-    padding: 10px 25px;
-    border: none;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(154, 125, 255, 0.3);
-}
-
-.stButton>button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(154, 125, 255, 0.4);
-}
-
-/* Card styling */
-.stDataFrame, .stAlert, .stExpander {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-radius: 15px !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: #2D2D2D;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 4px;
-}
-
-/* Animated gradients */
-@keyframes gradient {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+    position: relative;
+    background: linear-gradient(45deg, #1A1A1A 0%, #2D2D2D 100%);
 }
 
 .stApp::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-    opacity: 0.1;
-    z-index: -1;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+/* Content Elevation */
+.stApp > div {
+    position: relative;
+    z-index: 1;
+}
+
+/* Enhanced Button Styling */
+.stButton > button {
+    background: #9A7DFF !important;
+    border-radius: 12px !important;
+    padding: 12px 32px !important;
+    font-weight: 600 !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.stButton > button:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 8px 24px rgba(154, 125, 255, 0.4) !important;
+}
+
+/* Glassmorphism Cards */
+.stDataFrame, .stAlert, .stExpander {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 24px !important;
+    padding: 24px !important;
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9A7DFF;
+    border-radius: 4px;
+}
+
+/* Keyframe Animation */
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
