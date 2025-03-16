@@ -1,10 +1,15 @@
 /* Hide default Streamlit elements */
-#MainMenu {visibility: hidden;}
-/* header {visibility: hidden;} */
-footer {visibility: hidden;}
-.stShareButton { display: block; }
-.stStarButton { display: block; }
-.stDeployButton {display: none;}
+#MainMenu { visibility: hidden; }      /* Hide the menu (three dots) */
+footer { visibility: hidden; }         /* Hide the footer (edit, fork, etc.) */
+.stApp .css-1a5k6so { display: none; } /* Hide the hamburger menu (for mobile views) */
+
+/* Retain only the Share and Star buttons */
+.stShareButton { display: block !important; }
+.stStarButton { display: block !important; }
+
+/* Hide the settings (gear icon) and other elements */
+button[title="Settings"] { display: none; }
+button[title="Help"] { display: none; }
 div.block-container {padding-top: 2rem;}
 
 /* Jazzy Theme Styles */
