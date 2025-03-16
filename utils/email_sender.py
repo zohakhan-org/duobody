@@ -44,8 +44,8 @@ class EmailSender:
 
     def send_contact_email(self, name, email, subject, message, recipient="mohdzohakhan@gmail.com"):
         """Send a contact email to a specific recipient"""
-        if not self.username or not self.password:
-            raise ValueError("Email credentials are not configured.")
+   #     if not self.username or not self.password:
+   #         raise ValueError("Email credentials are not configured.")
 
         # If recipient is not provided, default to self.contact_email
 
