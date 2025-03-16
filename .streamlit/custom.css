@@ -1,11 +1,19 @@
 /* Hide default Streamlit elements */
-#MainMenu { visibility: hidden; }      /* Hide the menu (three dots) */
-footer { visibility: hidden; }         /* Hide the footer (edit, fork, etc.) */
-.stApp .css-1q8gqfj { display: none; }  /* Hide the pencil icon (edit) */
-.stApp .css-1wdll7g { display: none; }  /* Hide the GitHub (fork) icon */
-/* Retain only the Share and Star buttons */
-.stShareButton { display: block !important; }
-.stStarButton { display: block !important; }
+/* Hide the GitHub (fork) and pencil (edit) icons */
+.stApp .css-1j7k2n1, /* Edit (pencil) icon */
+.stApp .css-1qdprrj { /* GitHub (fork) icon */
+    display: none !important;
+}
+
+/* Ensure Share and Star buttons are visible */
+.stApp .stShareButton, .stApp .stStarButton {
+    display: inline-block !important;
+}
+
+/* Optional: Hide the Main Menu, Footer, and Deploy Button */
+#MainMenu, header, footer, .stDeployButton {
+    visibility: hidden;
+}
 
 /* Hide the settings (gear icon) and other elements */
 button[title="Settings"] { display: none; }
