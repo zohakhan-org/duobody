@@ -1,86 +1,140 @@
-/* Core Reset */
+/* ========== Base Reset ========== */
 #MainMenu, footer, .stDeployButton {
     display: none !important;
 }
 
-/* Gradient Overlay Fix */
-.stApp {
-    position: relative;
-    background: linear-gradient(45deg, #1A1A1A 0%, #2D2D2D 100%);
+/* ========== Color Scheme ========== */
+:root {
+    /* Core Palette */
+    --primary: #2563EB;         /* IBM Blue */
+    --secondary: #3B82F6;       /* Azure Blue */
+    --success: #10B981;         /* Emerald Green */
+    --warning: #F59E0B;         /* Amber */
+    --danger: #EF4444;          /* Crimson */
+
+    /* Neutrals */
+    --background: #0F172A;      /* Navy Base */
+    --surface: #1E293B;         /* Slate Surface */
+    --on-surface: #F8FAFC;      /* White Text */
+
+    /* Elevation */
+    --elevation-1: #1E293B;
+    --elevation-2: #334155;
 }
 
-.stApp::before {
-    content: '';
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    opacity: 0.15;
-    z-index: 0;
+/* ========== Typography ========== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif !important;
+    letter-spacing: -0.015em;
 }
 
-/* Content Elevation */
-.stApp > div {
-    position: relative;
-    z-index: 1;
+h1 {
+    font-weight: 700 !important;
+    color: var(--on-surface) !important;
+    margin-bottom: 1.5rem !important;
 }
 
-/* Enhanced Button Styling */
-.stButton > button {
-    background: #9A7DFF !important;
-    border-radius: 12px !important;
-    padding: 12px 32px !important;
+h2, h3 {
     font-weight: 600 !important;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    color: var(--on-surface) !important;
+}
+
+/* ========== Component Styling ========== */
+.stApp {
+    background: var(--background);
+    color: var(--on-surface);
+}
+
+/* ----- Buttons ----- */
+.stButton > button {
+    background: var(--primary) !important;
+    border-radius: 8px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .stButton > button:hover {
-    transform: scale(1.05) !important;
-    box-shadow: 0 8px 24px rgba(154, 125, 255, 0.4) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
 }
 
-/* Glassmorphism Cards */
-.stDataFrame, .stAlert, .stExpander {
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 24px !important;
-    padding: 24px !important;
+/* ----- Inputs & Forms ----- */
+.stTextInput>div>div>input,
+.stTextArea>div>textarea,
+.stSelectbox>div>div>div {
+    background: var(--surface) !important;
+    border: 1px solid #334155 !important;
+    border-radius: 6px !important;
+    padding: 10px 14px !important;
 }
 
-/* Modern Scrollbar */
+/* ----- Data Tables ----- */
+.stDataFrame {
+    border: 1px solid #334155 !important;
+    border-radius: 8px !important;
+    background: var(--surface) !important;
+}
+
+.stDataFrame th {
+    background: var(--elevation-2) !important;
+    font-weight: 600 !important;
+}
+
+/* ----- Cards & Containers ----- */
+.stAlert, .stExpander {
+    background: var(--surface) !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stExpander > label {
+    font-weight: 600 !important;
+}
+
+/* ----- Progress & Status ----- */
+.stProgress > div > div > div {
+    background: var(--primary) !important;
+}
+
+/* ----- Custom Scrollbar ----- */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
+::-webkit-scrollbar-track {
+    background: var(--surface);
+}
+
 ::-webkit-scrollbar-thumb {
-    background: #9A7DFF;
+    background: #334155;
     border-radius: 4px;
 }
 
-/* Keyframe Animation */
-@keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* ========== Utility Classes ========== */
+.surface-container {
+    background: var(--surface) !important;
+    border-radius: 8px !important;
+    padding: 24px !important;
+    border: 1px solid #334155 !important;
 }
 
+.elevation-1 {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ========== Responsive Design ========== */
 @media (max-width: 768px) {
-    .stDataFrame, .stAlert, .stExpander {
-        border-radius: 16px !important;
-        padding: 16px !important;
+    div.block-container {
+        padding: 1.5rem !important;
     }
-}
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-* {
-    font-family: 'Inter', sans-serif !important;
-}
-div.block-container {
-    padding-top: 2rem;
-    padding-bottom: 4rem;
+    .stDataFrame {
+        font-size: 14px !important;
+    }
 }

@@ -6,10 +6,10 @@ enableCORS = false
 
 [theme]
 base = "dark"
-primaryColor = "#9A7DFF"
-backgroundColor = "#1A1A1A"
-secondaryBackgroundColor = "#2D2D2D"
-textColor = "#FFFFFF"
+primaryColor = "#2563EB"  # Professional blue
+backgroundColor = "#0F172A"  # Deep navy
+secondaryBackgroundColor = "#1E293B"  # Dark slate
+textColor = "#F8FAFC"  # Bright white
 font = "sans serif"
 
 [browser]
