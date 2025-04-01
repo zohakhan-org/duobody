@@ -46,7 +46,7 @@ if is_authenticated():
             app.logout()
             st.rerun()
 st.write("""
-**Last Updated: January 1, 2023**
+**Last Updated: January 1, 2025**
 
 This Privacy Policy describes how the PDB Analysis Platform ("we," "our," or "us") collects, uses, and 
 shares your personal information when you use our platform.
@@ -56,64 +56,36 @@ described in this policy.
 """)
 
 # Data collection section
-st.header("Information We Collect")
+st.header("Information Collected")
 
-st.subheader("Information You Provide to Us")
+
 st.write("""
-We collect information you provide directly to us when you:
+The information you directly provide to us is collected but not stored by our program, including:
 
-- Create an account
-- Upload PDB files for analysis
-- Submit contact form inquiries
-- Participate in surveys or feedback requests
-- Communicate with our support team
+- Email address (used for account identification and to send analysis results)
+- Uploaded PDB files and analysis results
 
-This information may include:
-
-- **Account Information**: Your name, email address, and profile information from your Google account when you authenticate through Gmail
-- **User Content**: PDB files and related data you upload for analysis
-- **Communications**: Information you provide in your communications with us, including through the contact form
 """)
 
-st.subheader("Information We Collect Automatically")
+st.subheader("How Your Information is Used")
 st.write("""
-When you use our platform, we automatically collect certain information, including:
+Your collected information is used to:
 
-- **Usage Information**: How you use our platform, including pages visited, features used, and actions taken
-- **Device Information**: Information about your device, including IP address, browser type, and operating system
-- **Log Data**: Server logs and error reports
-""")
-
-# Data use section
-st.header("How We Use Your Information")
-st.write("""
-We use the information we collect to:
-
-- **Provide and maintain our services**, including processing PDB files and delivering analysis results
-- **Improve and develop our platform** by analyzing usage patterns and user feedback
-- **Personalize your experience** by remembering your preferences and customizing content
-- **Communicate with you** about updates, new features, and respond to your inquiries
-- **Ensure security and prevent fraud** by monitoring for suspicious activity
-- **Comply with legal obligations** as required by applicable laws and regulations
+- Provide, maintain, and improve our services
+- Send you analysis results
+- Respond to comments, questions, and requests
 """)
 
 # Data sharing section
 st.header("How We Share Your Information")
 st.write("""
-We may share your information in the following circumstances:
-
-- **With Service Providers**: We share information with third-party vendors who provide services on our behalf, such as hosting, analytics, and customer support. These providers are contractually obligated to use your information only for the purposes of providing services to us.
-- **For Legal Reasons**: We may disclose information if we believe it is necessary to comply with applicable laws, regulations, legal processes, or governmental requests.
-- **With Your Consent**: We may share information with third parties when you give us explicit consent to do so.
-- **Business Transfers**: If we are involved in a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.
-
-We do not sell your personal information to third parties.
+Your personally identifiable information is not sold, traded, or otherwise transferred to outside parties.
 """)
 
 # Data security section
 st.header("Data Security")
 st.write("""
-We implement appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, alteration, and destruction. These measures include:
+We are in the process of implementing appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, alteration, and destruction. These measures include:
 
 - Secure authentication through OAuth2
 - Encryption of data in transit and at rest
@@ -138,35 +110,6 @@ For account information:
 - If you request account deletion, we will delete your personal information within 30 days, except as required to comply with legal obligations.
 """)
 
-# User rights section
-st.header("Your Rights and Choices")
-st.write("""
-Depending on your location, you may have certain rights regarding your personal information, including:
-
-- **Access**: You can request a copy of the personal information we hold about you.
-- **Correction**: You can request that we correct inaccurate or incomplete information.
-- **Deletion**: You can request that we delete your personal information.
-- **Restriction**: You can request that we restrict the processing of your personal information.
-- **Data Portability**: You can request that we provide your personal information in a structured, commonly used, and machine-readable format.
-- **Objection**: You can object to our processing of your personal information.
-
-To exercise these rights, please contact us using the contact information provided below.
-""")
-
-# Children's privacy section
-st.header("Children's Privacy")
-st.write("""
-The PDB Analysis Platform is not directed to individuals under the age of 16. We do not knowingly collect personal information from children under 16. If we become aware that we have collected personal information from a child under 16 without verification of parental consent, we will take steps to delete that information. If you believe we might have any information from or about a child under 16, please contact us.
-""")
-
-# International data transfers section
-st.header("International Data Transfers")
-st.write("""
-Your information may be transferred to, stored, and processed in countries other than the country in which you reside. These countries may have data protection laws that are different from the laws of your country.
-
-We take appropriate safeguards to require that your personal information will remain protected in accordance with this Privacy Policy when transferred internationally.
-""")
-
 # Changes to policy section
 st.header("Changes to This Privacy Policy")
 st.write("""
@@ -178,8 +121,8 @@ st.header("Contact Us")
 st.write("""
 If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us at:
 
-**Email**: privacy@pdbanalysis.example.com
-**Address**: 123 Research Way, Science City, SC 12345, United States
+**Email**: invisiblemr674@gmail.com
+**Address**: Buffalo, New York, United States
 
 If you have an unresolved privacy concern that we have not addressed satisfactorily, please contact your local data protection authority.
 """)

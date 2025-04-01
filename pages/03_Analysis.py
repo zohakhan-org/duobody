@@ -78,7 +78,7 @@ if analysis_type == "Single PDB Analysis":
     # Create tabs for different analysis modes
     analysis_mode = st.radio(
         "Select Analysis Mode:",
-        ["Receptor Only", "Antibody Only", "Receptor-Antibody Analysis"],
+        ["Receptor Only", "Antibody Only"],
         horizontal=True,
         key="analysis_mode_radio"
     )
