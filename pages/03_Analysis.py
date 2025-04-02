@@ -40,7 +40,7 @@ if 'analysis_type' not in st.session_state:
     st.session_state.analysis_type = "single"
 
 # Page content
-st.title("PDB Structure Analysis")
+st.title("🔬PDB Structure Analysis")
 
 if is_authenticated():
     # Get user information
