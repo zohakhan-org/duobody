@@ -126,7 +126,6 @@ If you have any questions, concerns, or requests regarding this Privacy Policy o
 
 If you have an unresolved privacy concern that we have not addressed satisfactorily, please contact your local data protection authority.
 """)
-
 # Consent acknowledgment
 st.info("""
 By using the PDB Analysis Platform, you acknowledge that you have read and understood this Privacy Policy.
