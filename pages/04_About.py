@@ -68,7 +68,46 @@ st.divider()
 # Publications and Citations
 st.header("Publications")
 st.write("""
-my publications
+**RESEARCH PAPER**: Utilization of Bi-specific Antibodies for Clinical use against non small cell lung cancer
+Accepted for publication by **PRINCETON IEEE**.
+""")
+
+st.header("Honors and Awards")
+st.write("""
+- Selected as an **EMERGING SCIENTIST OF THE YEAR** by New York Academy of Sciences.
+- AP scholar award 2024
+- Oracle cloud infrastructure 2024 Generative AI certified Professional
+- New York Academy of Junior Sciences Winner [First Place Fall 2023, Project of Distinction in Spring 2024]
+- Excellence Award in Engineering and Technology, 2024
+- Buffalo State Computer Science Competition (First Place)
+- TSA States (3rd Place for Coding)
+- Science Olympiad Regionals 
+    - Silver Medal disease detective
+    - Bronze Medal Detector Building
+    - Bronze Medal Flight 
+- PTSA Reflections - Literature [Regional Outstanding Excellence Award, 2023]
+- Excellence Award in Earth Science, 2023 
+""")
+
+st.header("Community Services")
+st.write("""
+- Amherst YES (Youth Engaged In Services): BRONZE Medal, 2024
+- Amherst Youth Consortium
+- Big Brother Big Sisters
+- Sunday School Volunteer At Masjid An Noor, Getzville, NY 
+""")
+
+st.header("Extra -Curricular Activities")
+st.write("""
+- Computer Club: Vice President
+- French Club: Treasurer
+- Technology Student Association (TSA): Secretary, New York State Delegate
+- National Honor Society: Member
+- Science Honor Society: Member
+- SIHAC - Superintendent Inter High Action Committee
+    - Group A Chair 2023-2024
+    - Group B Chair 2024-2025
+- SDM - Shared Decision Making: Member 
 """)
 
 # Get in touch
