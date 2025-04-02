@@ -110,7 +110,7 @@ def logout():
 
 def main():
     # Display header
-    st.title("PDB Analysis Platform")
+    st.title("🧬 PDB Analysis Platform")
 
     # Check if user is authenticated
     if is_authenticated():

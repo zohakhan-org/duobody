@@ -6,7 +6,7 @@ import itertools
 import subprocess
 import shutil
 import pandas as pd
-import app
+import Welcome
 import logging
 
 # Set up logging
@@ -15,7 +15,7 @@ logger = logging.getLogger()
 
 # Add the root directory to the path so we can import from the root
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app import is_authenticated
+from Welcome import is_authenticated
 
 # Set page title
 st.set_page_config(
@@ -37,11 +37,11 @@ if not is_authenticated():
     st.stop()
 
 # Page content
-st.title("DuoDok Analysis")
+st.title("🧬 DuoDok Analysis")
 st.write("Note: You must install the files from Github to run it.")
 
 # Fetch user info
-user_info = app.get_user_info()
+user_info = Welcome.get_user_info()
 
 # Sidebar: User Info & Logout
 with st.sidebar:
@@ -54,7 +54,7 @@ with st.sidebar:
 
     # Logout button
     if st.button("Logout"):
-        app.logout()
+        Welcome.logout()
         st.rerun()
 
 # Folder setup
@@ -309,7 +309,7 @@ if st.button("Run Analysis", type="primary"):
             run_analysis(selected_receptors, selected_antibodies, user_info['email'])
         else:
             st.error("User authentication failed. Please log in again.")
-            app.logout()
+            Welcome.logout()
             st.rerun()
 
 # Information section

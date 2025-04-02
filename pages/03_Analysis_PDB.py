@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import sys
 import time
-import app
+import Welcome
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
@@ -10,7 +10,7 @@ from io import BytesIO
 
 # Add the root directory to the path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app import is_authenticated, get_user_info, logout
+from Welcome import is_authenticated, get_user_info, logout
 from utils.pdb_analyzer import PDBAnalyzer
 
 # Set page configuration
@@ -117,7 +117,7 @@ st.title("🔬PDB Structure Analysis Visualization")
 
 if is_authenticated():
     # Get user information
-    user_info = app.get_user_info()
+    user_info = Welcome.get_user_info()
 
 # User sidebar
 with st.sidebar:

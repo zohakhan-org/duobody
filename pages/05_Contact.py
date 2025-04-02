@@ -2,11 +2,11 @@ import streamlit as st
 import sys
 import os
 
-import app
+import Welcome
 
 # Add the root directory to the path so we can import from the root
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app import is_authenticated, get_user_info
+from Welcome import is_authenticated, get_user_info
 from utils.email_sender import EmailSender
 
 # Set page title
@@ -46,10 +46,10 @@ if user_info is not None:
     user_name = user_info.get('name', '')
 
 # Page content
-st.title("Contact Us")
+st.title("📨Contact Us")
 if is_authenticated():
     # Get user information
-    user_info = app.get_user_info()
+    user_info = Welcome.get_user_info()
 
     # Display user information and logout button in the sidebar
     with st.sidebar:
@@ -63,7 +63,7 @@ if is_authenticated():
 
         # Logout button
         if st.button("Logout"):
-            app.logout()
+            Welcome.logout()
             st.rerun()
 st.write("""
 We value your feedback and are here to help with any questions or concerns you may have about the PDB Analysis Platform.

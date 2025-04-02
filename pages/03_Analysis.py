@@ -3,11 +3,11 @@ import time
 import os
 import sys
 
-import app
+import Welcome
 
 # Add the root directory to the path so we can import from the root
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app import is_authenticated, get_user_info
+from Welcome import is_authenticated, get_user_info
 from utils.pdb_analyzer import PDBAnalyzer
 
 # Set page title
@@ -44,7 +44,7 @@ st.title("🔬PDB Structure Analysis")
 
 if is_authenticated():
     # Get user information
-    user_info = app.get_user_info()
+    user_info = Welcome.get_user_info()
 
     # Display user information and logout button in the sidebar
     with st.sidebar:
@@ -58,7 +58,7 @@ if is_authenticated():
 
         # Logout button
         if st.button("Logout"):
-            app.logout()
+            Welcome.logout()
             st.rerun()
 
 # Create tabs for single analysis and comparison

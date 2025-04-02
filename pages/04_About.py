@@ -2,11 +2,11 @@ import streamlit as st
 import sys
 import os
 
-import app
+import Welcome
 
 # Add the root directory to the path so we can import from the root
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app import is_authenticated
+from Welcome import is_authenticated
 
 # Set page title
 st.set_page_config(
@@ -28,10 +28,10 @@ if not is_authenticated():
     st.stop()
 
 # Page content
-st.title("About the Author")
+st.title("🌟About the Author")
 if is_authenticated():
     # Get user information
-    user_info = app.get_user_info()
+    user_info = Welcome.get_user_info()
 
     # Display user information and logout button in the sidebar
     with st.sidebar:
@@ -45,7 +45,7 @@ if is_authenticated():
 
         # Logout button
         if st.button("Logout"):
-            app.logout()
+            Welcome.logout()
             st.rerun()
 st.header("Me, Myself and I")
 
