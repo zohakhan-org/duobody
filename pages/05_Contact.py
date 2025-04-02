@@ -46,6 +46,7 @@ if user_info is not None:
     user_name = user_info.get('name', '')
 
 # Page content
+st.image("duodok.png", width=100)
 st.title("📨Contact Us")
 if is_authenticated():
     # Get user information

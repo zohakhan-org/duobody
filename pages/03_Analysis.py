@@ -40,6 +40,7 @@ if 'analysis_type' not in st.session_state:
     st.session_state.analysis_type = "single"
 
 # Page content
+st.image("duodok.png", width=100)
 st.title("🔬PDB Structure Analysis")
 
 if is_authenticated():

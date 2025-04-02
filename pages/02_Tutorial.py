@@ -28,7 +28,8 @@ if not is_authenticated():
     st.stop()
 
 # Page content
-st.title("🎓 Tutorial: How to Use the PDB Analysis Platform")
+st.image("duodok.png", width=100)
+st.title("🎓Tutorial: How to Use the PDB Analysis Platform")
 if is_authenticated():
     # Get user information
     user_info = Welcome.get_user_info()
@@ -80,7 +81,42 @@ Simply search for proteins of interest and download the PDB files for analysis o
 """)
 
 # Analysis tutorial
-st.header("2. Single PDB File Analysis")
+st.header("2. Duodok Analysis")
+st.subheader("a. Uploading Files")
+st.write("""
+You can upload your own PDB files or use our default structures:
+
+- Navigate to the DuoDok page
+- Use the "Upload Receptor" or "Upload Antibody" buttons
+- Select a .pdb file from your computer
+- Your file will be added to the list of available structures
+
+""")
+
+st.subheader("b. Running Analysis")
+st.write("""
+To analyze receptor-antibody interactions:
+
+- Select at least one receptor and one antibody
+- Click "Run Analysis"
+- The system will create all possible combinations
+- Each pair will be processed through HDOCK, PRODIGY, and PLIP
+- Results will be sent to your email address
+
+""")
+
+st.subheader("c. Interpreting Results")
+st.write("""
+Your results email will contain:
+
+- A summary CSV file with binding energies for each pair
+- A ZIP archive with detailed results for each analysis
+- Visualization files that can be opened with PyMOL
+
+""")
+
+
+st.header("3. Single PDB File Analysis")
 st.write("""
 To analyze a single PDB file:
 
@@ -98,7 +134,7 @@ The analysis provides details about:
 """)
 
 # Compare tutorial
-st.header("3. Comparing Two PDB Files")
+st.header("4. Comparing Two PDB Files")
 st.write("""
 To compare two PDB structures:
 
@@ -115,7 +151,7 @@ This feature is particularly useful for:
 """)
 
 # Interpreting results
-st.header("4. Interpreting Results")
+st.header("5. Interpreting Results")
 st.write("""
 Our analysis reports provide several key metrics:
 
@@ -132,7 +168,7 @@ When comparing structures, pay special attention to:
 """)
 
 # Tips and best practices
-st.header("5. Tips and Best Practices")
+st.header("6. Tips and Best Practices")
 st.write("""
 - **Clean Your PDB Files**: Remove heteroatoms, water molecules, or alternative conformations if they're not relevant to your analysis
 - **Consistent Comparison**: When comparing structures, ensure they represent the same protein or region
@@ -141,25 +177,16 @@ st.write("""
 """)
 
 # Video tutorials
-st.header("6. Video Tutorials")
+st.header("7. Video Tutorials")
 
 # First video tutorial
 st.subheader("Basic PDB File Analysis")
+st.write("<< **Coming Soon** >>")
 st.write("This video explains how to perform basic analysis of a single PDB file.")
-st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")  # Placeholder YouTube link
 
-# Second video tutorial
-st.subheader("Comparing Multiple PDB Structures")
-st.write("Learn how to compare two different protein structures to identify key differences.")
-st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")  # Placeholder YouTube link
-
-# Third video tutorial
-st.subheader("Advanced Analysis Features")
-st.write("Discover advanced features for in-depth structural analysis.")
-st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ")  # Placeholder YouTube link
 
 # Help and support
-st.header("7. Getting Help")
+st.header("8. Getting Help")
 st.write("""
 If you need assistance or have questions about using the platform:
 
@@ -171,4 +198,6 @@ If you need assistance or have questions about using the platform:
 # Closing note
 st.success("""
 Now that you're familiar with the platform, head to the **Analysis** page to start analyzing your PDB files!
+
+For any further help, feel free to reach out through the **Contact** page or our support email.
 """)

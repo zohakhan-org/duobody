@@ -113,6 +113,7 @@ def create_comparison_visualizations(comparison_data):
 
 
 # Main application layout
+st.image("duodok.png", width=100)
 st.title("🔬PDB Structure Analysis Visualization")
 
 if is_authenticated():
@@ -247,20 +248,20 @@ else:
             st.plotly_chart(fig2, use_container_width=True)
 
         # Textual results
-        st.subheader("Detailed Comparison")
-        col1, col2 = st.columns(2)
+#        st.subheader("Detailed Comparison")
+#        col1, col2 = st.columns(2)
 
-        with col1:
-            st.write("### Structure 1")
-            st.write(f"**ID:** {comp.get('structure1_id', 'N/A')}")
-            st.write(f"**Residues:** {comp.get('structure1_residue_count', 'N/A')}")
-            st.write(f"**Atoms:** {comp.get('structure1_atom_count', 'N/A')}")
+#        with col1:
+#            st.write("### Structure 1")
+#            st.write(f"**ID:** {comp.get('structure1_id', 'N/A')}")
+#            st.write(f"**Residues:** {comp.get('structure1_residue_count', 'N/A')}")
+#            st.write(f"**Atoms:** {comp.get('structure1_atom_count', 'N/A')}")
 
-        with col2:
-            st.write("### Structure 2")
-            st.write(f"**ID:** {comp.get('structure2_id', 'N/A')}")
-            st.write(f"**Residues:** {comp.get('structure2_residue_count', 'N/A')}")
-            st.write(f"**Atoms:** {comp.get('structure2_atom_count', 'N/A')}")
+#        with col2:
+#            st.write("### Structure 2")
+#            st.write(f"**ID:** {comp.get('structure2_id', 'N/A')}")
+#            st.write(f"**Residues:** {comp.get('structure2_residue_count', 'N/A')}")
+#            st.write(f"**Atoms:** {comp.get('structure2_atom_count', 'N/A')}")
 
         # Download report
         st.subheader("Export Comparison")

@@ -26,6 +26,7 @@ if not is_authenticated():
     st.stop()
 
 # Page content
+st.image("duodok.png", width=100)
 st.title("🕵️ Privacy Policy")
 if is_authenticated():
     # Get user information

@@ -28,30 +28,49 @@ if not is_authenticated():
     st.stop()
 
 # Page content
-st.title("👋 Introduction to PDB Analysis Platform")
-
+st.image("duodok.png", width=100)
+st.title("👋Introduction to DuoDok Platform")
 if is_authenticated():
     # Get user information
     user_info = Welcome.get_user_info()
-
     # Display user information and logout button in the sidebar
     with st.sidebar:
         if user_info:
             st.write(f"Welcome, {user_info.get('name', 'User')}!")
             st.write(f"Email: {user_info.get('email', 'N/A')}")
             st.write("© 2025 DuoDok")
-
         else:
             st.write("Welcome, User! © 2025 DuoDok")
-
         # Logout button
         if st.button("Logout"):
             Welcome.logout()
             st.rerun()
-
+st.subheader("About DuoDok")
 st.write("""
-## What is the PDB Analysis Platform?
+DuoDok is a powerful web application designed for molecular docking analysis of receptor-antibody interactions. Our platform integrates several computational biology tools to provide comprehensive analysis of protein-protein interactions.
+""")
+st.subheader("Key Features")
+st.write("""
+- Upload and manage your own PDB files for receptors and antibodies
+- Access to a library of default receptor and antibody structures
+- Automated docking using HDOCK algorithm
+- Binding energy prediction using PRODIGY
+- Detailed interaction analysis with PLIP
+- Results delivered directly to your email
+""")
+st.subheader("How to Get Started")
+st.write("""
+1. Visit the Tutorial page to watch a video guide on using DuoDok
+2. Navigate to the DuoDok page
+3. Upload your PDB files or select from our default library
+4. Run the analysis to get comprehensive results
+5. Receive your results via email
 
+""")
+
+st.subheader("PDB Analysis Platform")
+st.subheader("What is the PDB Analysis Platform?")
+st.write("""
 The PDB Analysis Platform is a comprehensive tool designed for researchers, scientists, and students 
 working with protein structures. Our platform provides an intuitive interface to analyze and compare 
 Protein Data Bank (PDB) files, helping you gain insights into protein structures and their properties.
@@ -79,7 +98,7 @@ Compare two PDB files to identify:
 
 ### 4. Visualization
 While we don't provide direct 3D visualization, our analysis results are designed to complement 
-popular visualization tools like PyMOL, Chimera, and VMD.
+popular visualization tools like PyMOL.
 
 ## Getting Started
 

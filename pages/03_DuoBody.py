@@ -37,6 +37,7 @@ if not is_authenticated():
     st.stop()
 
 # Page content
+st.image("duodok.png", width=100)
 st.title("🧬 DuoDok Analysis")
 st.write("Note: You must install the files from Github to run it.")
 
