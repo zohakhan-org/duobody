@@ -323,7 +323,7 @@ st.markdown("""
 - **PRODIGY** - Predicts binding affinity of protein-protein complexes
 - **PLIP** - Analyzes protein-ligand interactions
 """)
-st.write("The system will analyze all possible combinations of selected receptors and antibodies. Results will be emailed to your address (demo@gmail.com) once processing is complete.")
+st.write("The system will analyze all possible combinations of selected receptors and antibodies. Results will be emailed to your email once processing is complete.")
 st.write("This platform facilitates an efficient workflow for antibody research and development.")
 
 st.image("workflow.png", use_container_width=True, caption="DuoDok workflow diagram")

@@ -166,14 +166,14 @@ if not st.session_state.form_submitted:
 
     with col1:
         st.write("### Email")
-        st.write("For general inquiries: info@duobody.com")
-        st.write("For technical support: support@duobody.com")
-        st.write("For technical support: support@duobody.com")
+        st.write("For general inquiries: invisiblemr674@gmail.com")
+        st.write("For technical support: invisiblemr674@gmail.com")
+
 
     with col2:
         st.write("### Social Media")
         st.write("Twitter: [@DuoBody](https://twitter.com)")
-        st.write("LinkedIn: [DuoBody](https://linkedin.com)")
+        st.write("LinkedIn: [DuoBody](https://linkedin.com/in/mak08)")
         st.write("GitHub: [DuoBody](https://github.com)")
 
 # FAQ section
