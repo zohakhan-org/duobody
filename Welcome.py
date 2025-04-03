@@ -111,7 +111,7 @@ def logout():
 def main():
     # Display header
     st.image("duodok.png", width=100)
-    st.title("🧬 PDB Analysis Platform")
+    st.title("🧬PDB Analysis Platform")
     # Check if user is authenticated
     if is_authenticated():
         # Get user information
