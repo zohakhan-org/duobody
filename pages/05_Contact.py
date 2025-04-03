@@ -174,7 +174,6 @@ if not st.session_state.form_submitted:
         st.write("### Social Media")
         st.write("Twitter: [@DuoBody](https://twitter.com)")
         st.write("LinkedIn: [DuoBody](https://linkedin.com/in/mak08)")
-        st.write("GitHub: [DuoBody](https://github.com)")
 
 # FAQ section
 with st.expander("Frequently Asked Questions"):
