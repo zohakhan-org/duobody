@@ -38,7 +38,7 @@ if not is_authenticated():
 
 # Page content
 st.image("duodok.png", width=100)
-st.title("🧬 DuoDok Analysis")
+st.title("🧬DuoDok Analysis")
 st.write("Note: You must install the files from Github to run it.")
 
 # Fetch user info

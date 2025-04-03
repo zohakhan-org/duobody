@@ -27,7 +27,7 @@ if not is_authenticated():
 
 # Page content
 st.image("duodok.png", width=100)
-st.title("🕵️ Privacy Policy")
+st.title("🕵️Privacy Policy")
 if is_authenticated():
     # Get user information
     user_info = Welcome.get_user_info()
