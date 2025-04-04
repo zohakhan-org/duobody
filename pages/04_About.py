@@ -110,7 +110,16 @@ st.write("""
     - Group B Chair 2024-2025
 - SDM - Shared Decision Making: Member 
 """)
-
+st.write("""
+For more details about my personal achievements please refer below pdf file.
+""")
+st.download_button(
+    label="Download My Achievements PDF",
+    data=open("AARISH_RESUME.pdf", "rb").read(),
+    file_name="AARISH_RESUME.pdf",
+    mime="application/pdf",
+    help="Click to download my achievements and resume in PDF format."
+)
 # Get in touch
 st.header("Get in Touch")
 st.write("""
