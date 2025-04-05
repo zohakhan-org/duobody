@@ -49,7 +49,7 @@ if is_authenticated():
 st.write("""
 **Last Updated: January 1, 2025**
 
-This Privacy Policy describes how the PDB Analysis Platform ("we," "our," or "us") collects, uses, and 
+This Privacy Policy describes how DuoDok collects, uses, and 
 shares your personal information when you use our platform.
 
 Please read this Privacy Policy carefully. By using the PDB Analysis Platform, you agree to the practices 
@@ -63,18 +63,15 @@ st.header("Information Collected")
 st.write("""
 The information you directly provide to us is collected but not stored by our program, including:
 
-- Email address (used for account identification and to send analysis results)
+- Email address (used for account identification, to send  any forms and to send analysis results)
 - Uploaded PDB files and analysis results
 
 """)
 
 st.subheader("How Your Information is Used")
 st.write("""
-Your collected information is used to:
-
-- Provide, maintain, and improve our services
-- Send you analysis results
-- Respond to comments, questions, and requests
+Your personal information is not stored anywhere. The information you provide is used solely for the 
+purpose of providing the services you request.
 """)
 
 # Data sharing section
@@ -82,40 +79,11 @@ st.header("How We Share Your Information")
 st.write("""
 Your personally identifiable information is not sold, traded, or otherwise transferred to outside parties.
 """)
-
-# Data security section
-st.header("Data Security")
-st.write("""
-We are in the process of implementing appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, alteration, and destruction. These measures include:
-
-- Secure authentication through OAuth2
-- Encryption of data in transit and at rest
-- Regular security assessments and audits
-- Rate limiting to prevent abuse
-- Secure session management
-
-However, no security system is impenetrable, and we cannot guarantee the absolute security of our systems. If you have any concerns about the security of your information, please contact us immediately.
-""")
-
-# Data retention section
-st.header("Data Retention")
-st.write("""
-We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. 
-
-For uploaded PDB files and analysis results:
-- Files you upload for analysis are processed in memory and are not permanently stored unless you explicitly save your analysis.
-- Saved analyses are retained for 90 days after your last interaction with them, after which they are automatically deleted.
-
-For account information:
-- Your account information is retained as long as you maintain an active account.
-- If you request account deletion, we will delete your personal information within 30 days, except as required to comply with legal obligations.
-""")
-
 # Changes to policy section
 st.header("Changes to This Privacy Policy")
 st.write("""
-We may update this Privacy Policy from time to time. If we make material changes, we will notify you by email or by posting a notice on our platform prior to the changes becoming effective. We encourage you to review this Privacy Policy periodically to stay informed about our information practices.
-""")
+This Privacy Policy mey be updated from time to time. 
+ """)
 
 # Contact information section
 st.header("Contact Us")

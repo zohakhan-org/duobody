@@ -455,8 +455,6 @@ with st.expander("Need help with PDB analysis?"):
     - Missing residues or atoms in the PDB file can affect analysis
     - Some PDB files may contain non-standard residues
     - Older PDB files may have formatting differences
-
-    For more detailed instructions, visit the Tutorial page.
     """)
 
 # Add custom content section below analysis results
@@ -499,7 +497,7 @@ if st.session_state.analysis_result is not None or st.session_state.comparison_r
         4. **Side-by-Side Comparison**: Compare related structures to identify differences
         5. **Electrostatic Surface**: Calculate and visualize electrostatic potential
 
-        External visualization tools like PyMOL, Chimera, or online viewers can provide additional insights.
+        External visualization tools like PyMOL, ChimeraX, or online viewers can provide additional insights.
         """)
 
         # Add a color scheme picker mockup
@@ -524,17 +522,6 @@ if st.session_state.analysis_result is not None or st.session_state.comparison_r
 
         Your analysis results can inform experimental design and hypothesis generation.
         """)
-
-        # Add a citation generator mockup
-        st.write("#### Related Literature")
-        papers = [
-            "Smith et al. (2023) - Advances in PDB Structure Analysis",
-            "Johnson & Li (2022) - Protein Structure Prediction Methods",
-            "Garcia-Lopez et al. (2021) - Computational Tools for Protein Structure Analysis"
-        ]
-        for i, paper in enumerate(papers):
-            st.checkbox(paper, key=f"paper_{i}")
-        st.button("Generate Citations", key="cite_btn")
 
     with custom_tabs[3]:
         st.write("### Your Analysis Notes")

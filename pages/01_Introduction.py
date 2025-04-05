@@ -52,10 +52,9 @@ DuoDok is a powerful web application designed for molecular docking analysis of 
 st.subheader("Key Features")
 st.write("""
 - Upload and manage your own PDB files for receptors and antibodies
-- Access to a library of default receptor and antibody structures
-- Automated docking using HDOCK algorithm
+- Computational docking using HDOCK
 - Binding energy prediction using PRODIGY
-- Detailed interaction analysis with PLIP
+- Detailed analysis of non-covalent interactions with PLIP
 - Results delivered directly to your email
 """)
 st.subheader("How to Get Started")
@@ -68,37 +67,20 @@ st.write("""
 
 """)
 
-st.subheader("PDB Analysis Platform")
-st.subheader("What is the PDB Analysis Platform?")
+st.subheader("DuoDok")
+st.subheader("What is DuoDok?")
 st.write("""
-The PDB Analysis Platform is a comprehensive tool designed for researchers, scientists, and students 
-working with protein structures. Our platform provides an intuitive interface to analyze and compare 
+DuoDok is a comprehensive tool designed for researchers, scientists, and students 
+working with protein structures. This platform provides an intuitive interface to analyze and compare 
 Protein Data Bank (PDB) files, helping you gain insights into protein structures and their properties.
 
 ## Key Features
 
-### 1. PDB File Validation
-Upload your PDB files and verify their integrity with our validation system. We check for standard 
-format compliance and common structural issues.
+### 1. Structural Analysis
 
-### 2. Structural Analysis
-Analyze key properties of protein structures:
-- Residue and atom counts
-- Chain identification
-- Secondary structure elements
-- Bond lengths and angles
-- Structural motifs
+### 2. Comparative Analysis
 
-### 3. Comparative Analysis
-Compare two PDB files to identify:
-- Structural differences
-- Conformational changes
-- Ligand binding effects
-- Mutation impacts
-
-### 4. Visualization
-While we don't provide direct 3D visualization, our analysis results are designed to complement 
-popular visualization tools like PyMOL.
+### 3. Visualization
 
 ## Getting Started
 
@@ -119,22 +101,24 @@ To begin using the platform:
 # Display example use cases
 with st.expander("Example Use Cases"):
     st.write("""
-    ### Use Case 1: Analyzing Protein Mutations
+    ### Use Case 1: Bi-specific Antibody Creation
+    Create designs for bi-specific antibodies by analyzing the interactions between two different antibody structures and a common receptor. This helps in understanding how to optimize binding affinities and specificities.
+    
+    ### Use Case 2: Analyzing Protein Mutations
     Compare wild-type and mutant protein structures to understand how mutations affect protein folding and function.
 
-    ### Use Case 2: Drug Discovery
+    ### Use Case 3: Drug Discovery
     Analyze protein-ligand interactions by comparing bound and unbound protein structures to identify key binding sites.
 
-    ### Use Case 3: Protein Engineering
+    ### Use Case 4: Protein Engineering
     Evaluate structural changes in engineered proteins to optimize stability, activity, or specificity.
 
-    ### Use Case 4: Education
+    ### Use Case 5: Education
     Use the platform as a teaching tool to help students understand protein structure principles and analysis techniques.
     """)
 
 # Add a note about data privacy
 st.info("""
-**Note on Data Privacy:** The PDB files you upload are processed on our secure servers and are not stored 
-permanently unless you explicitly choose to save your analysis. For more information, please refer to our 
-Privacy Policy page.
+**Note on Data Privacy:** The PDB files you upload are processed as client-side processes and are not stored 
+permanently.
 """)

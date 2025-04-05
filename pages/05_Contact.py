@@ -67,8 +67,8 @@ if is_authenticated():
             Welcome.logout()
             st.rerun()
 st.write("""
-We value your feedback and are here to help with any questions or concerns you may have about the PDB Analysis Platform.
-Please fill out the form below, and our team will get back to you as soon as possible.
+We value your feedback and are here to help with any questions or concerns you may have about DuoDok.
+Please fill out the form below, and I will get back to you as soon as possible.
 """)
 
 # Contact form
@@ -178,18 +178,10 @@ if not st.session_state.form_submitted:
 # FAQ section
 with st.expander("Frequently Asked Questions"):
     st.write("""
-    ### How quickly will you respond to my inquiry?
-    We strive to respond to all inquiries within 24-48 business hours.
-
     ### Can I request a new feature for the platform?
-    Absolutely! We welcome feature requests and consider them for future updates.
-
-    ### Is there a premium version of the platform available?
-    We offer both free and premium versions with additional features. Contact us for details.
+    Absolutely! I welcome feature requests and will consider them for future updates.
 
     ### How can I report a bug?
     You can report bugs through this contact form by selecting "Bug Report" as the category.
 
-    ### Do you offer training or workshops on using the platform?
-    Yes, we conduct online workshops periodically. Contact us for the schedule.
     """)
